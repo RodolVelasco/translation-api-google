@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,38 +32,43 @@ public class WuaUnitController {
 	
 	@RequestMapping(method=RequestMethod.POST, value="/globalAlignmentToLegacy")
 	public String getGlobalAlignmentToLegacy(@RequestBody Params params) {
+		
 	//public List<WuaUnit> getGlobalAlignmentToLegacy(@RequestBody Params params) {
 		List<WuaUnit> subunitsAux = wuaUnitService.getGlobalAlignmentToLegacy(params.getCountry(), params.getGaSubunitName());
 		//List<WuaUnit> subunits = new ArrayList<WuaUnit>();
 		
 		System.out.println(subunitsAux.size());
 		JSONObject mainObj = new JSONObject();
-		
-		for (Iterator<WuaUnit> iterator = subunitsAux.iterator(); iterator.hasNext();) {
-			WuaUnit subunit = iterator.next();
-			if(subunit.getUniUnitUniId() != null) {
-				System.out.println(subunit.getUniUnitUniId().getUniWdName());
-				System.out.println(params.getGaUnitName());
-				if(subunit.getUniUnitUniId().getUniWdName().equals(params.getGaUnitName())) {
+		try {
+			for (Iterator<WuaUnit> iterator = subunitsAux.iterator(); iterator.hasNext();) {
+				WuaUnit subunit = iterator.next();
+				if(subunit.getUniUnitUniId() != null) {
+					System.out.println(subunit.getUniUnitUniId().getUniWdName());
+					System.out.println(params.getGaUnitName());
+					if(subunit.getUniUnitUniId().getUniWdName().equals(params.getGaUnitName())) {
+						//subunits.add(subunit);
+						JSONArray array = new JSONArray();
+						JSONObject json = new JSONObject();
+						json.put("country", subunit.getUniCountry());
+						json.put("Unit", subunit.getUniUnitUniId().getUniLegacyName());
+						json.put("Subunit", subunit.getUniLegacyName());
+						array.put(json);
+						mainObj.put("Unit_"+subunit.getUniId().toString(), array);
+					}
+				}else {
 					//subunits.add(subunit);
 					JSONArray array = new JSONArray();
 					JSONObject json = new JSONObject();
 					json.put("country", subunit.getUniCountry());
-					json.put("Unit", subunit.getUniUnitUniId().getUniLegacyName());
+					json.put("Unit", "");
 					json.put("Subunit", subunit.getUniLegacyName());
 					array.put(json);
 					mainObj.put("Unit_"+subunit.getUniId().toString(), array);
 				}
-			}else {
-				//subunits.add(subunit);
-				JSONArray array = new JSONArray();
-				JSONObject json = new JSONObject();
-				json.put("country", subunit.getUniCountry());
-				json.put("Unit", "");
-				json.put("Subunit", subunit.getUniLegacyName());
-				array.put(json);
-				mainObj.put("Unit_"+subunit.getUniId().toString(), array);
+			
 			}
+		}catch(JSONException e) {
+			e.printStackTrace();
 		}
 		
 		///return subunits;
