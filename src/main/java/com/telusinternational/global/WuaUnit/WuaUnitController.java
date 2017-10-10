@@ -83,33 +83,36 @@ public class WuaUnitController {
 		
 		System.out.println(subunitsAux.size());
 		JSONObject mainObj = new JSONObject();
-		
-		for (Iterator<WuaUnit> iterator = subunitsAux.iterator(); iterator.hasNext();) {
-			WuaUnit subunit = iterator.next();
-			if(subunit.getUniUnitUniId() != null) {
-				System.out.println(subunit.getUniUnitUniId().getUniWdName());
-				System.out.println(params.getGaUnitName());
-				if(subunit.getUniUnitUniId().getUniLegacyName().equals(params.getGaUnitName())) {
+		try {
+			for (Iterator<WuaUnit> iterator = subunitsAux.iterator(); iterator.hasNext();) {
+				WuaUnit subunit = iterator.next();
+				if(subunit.getUniUnitUniId() != null) {
+					System.out.println(subunit.getUniUnitUniId().getUniWdName());
+					System.out.println(params.getGaUnitName());
+					if(subunit.getUniUnitUniId().getUniLegacyName().equals(params.getGaUnitName())) {
+						//subunits.add(subunit);
+						JSONArray array = new JSONArray();
+						JSONObject json = new JSONObject();
+						json.put("country", subunit.getUniCountry());
+						json.put("Unit", subunit.getUniUnitUniId().getUniWdName());
+						json.put("Subunit", subunit.getUniWdName());
+						array.put(json);
+						mainObj.put("Unit", array);
+					}
+				}else {
 					//subunits.add(subunit);
 					JSONArray array = new JSONArray();
 					JSONObject json = new JSONObject();
 					json.put("country", subunit.getUniCountry());
-					json.put("Unit", subunit.getUniUnitUniId().getUniWdName());
+					json.put("Unit", "");
 					json.put("Subunit", subunit.getUniWdName());
 					array.put(json);
 					mainObj.put("Unit", array);
+					
 				}
-			}else {
-				//subunits.add(subunit);
-				JSONArray array = new JSONArray();
-				JSONObject json = new JSONObject();
-				json.put("country", subunit.getUniCountry());
-				json.put("Unit", "");
-				json.put("Subunit", subunit.getUniWdName());
-				array.put(json);
-				mainObj.put("Unit", array);
-				
 			}
+		}catch(JSONException e) {
+			e.printStackTrace();
 		}
 		
 		///return subunits;
