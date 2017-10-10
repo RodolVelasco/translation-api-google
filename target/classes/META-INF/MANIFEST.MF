@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Implementation-Title: Workday Global Alignment for Units and Subunits
+Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: luis.velasco2
+Implementation-Vendor-Id: io.telusinternational.uga
+Build-Jdk: 1.8.0_144
+Implementation-URL: http://projects.spring.io/spring-boot/translation-
+ api-google/
+Created-By: Maven Integration for Eclipse
+Implementation-Vendor: Pivotal Software, Inc.
+
