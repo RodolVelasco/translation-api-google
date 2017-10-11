@@ -1,0 +1,12 @@
+runtime: java
+env: flex
+service: translation-api-google
+
+#[START env]
+env_variables:
+    # Replace user, password, database, and instance connection name with the values obtained
+    # when configuring your Cloud SQL instance.
+    MYSQL_DSN: mysql:unix_socket=/cloudsql/ti-ca-ml-start:us-west1:ti-analytics;dbname=db_wd_unit_alignment_global
+    MYSQL_USER: ISRVelasco
+    MYSQL_PASSWORD: isrodolvelasco
+#[END env]
